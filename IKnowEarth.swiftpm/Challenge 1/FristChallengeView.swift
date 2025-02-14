@@ -16,9 +16,11 @@ struct Challenge1View: View {
     @State private var correctAnswer: Bool = false
     @State private var backgroundColor: Color = .white
     @State private var numberOfErrors: Int = 0
+    @State private var flipCard: Bool = false
     
-    // MARK: - Private Properties
-    private let animationDuration: Float = 0.5
+    // MARK: - Let Properties
+    private let numberOfCountriesToPick: Int = 3 //TODO: Change this later
+    private let animationDuration: Float = 2
     private let C1Countries: [Country] = [
         testCountries.bra.get,
         testCountries.chi.get,
@@ -48,7 +50,7 @@ struct Challenge1View: View {
                 VStack (spacing: 32) {
                     if let countrySelected {
                         // Card
-                        Image(countrySelected.blankCard)
+                        CountryCardView(country: countrySelected, flipCard: $flipCard)
                         
                         // Text Field
                         TextFieldView(text: $playerAnswer)
@@ -68,6 +70,7 @@ struct Challenge1View: View {
             }
         }
         .onAppear{countrySelected = getRandomCountry()}
+        .navigationBarBackButtonHidden()
     }
     
     
@@ -98,15 +101,18 @@ struct Challenge1View: View {
         if playerAnswer.uppercased() == countrySelected!.name.uppercased() {
             correctAnswer = true
             backgroundColor = .alienGreen
+            flipCard.toggle()
         } else {
             correctAnswer = false
             backgroundColor = .red
+            flipCard.toggle()
         }
         
         // Revert background to white and select a new country
         DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(animationDuration)) {
             backgroundColor = .white
             playerAnswer = ""
+            flipCard.toggle()
             countrySelected = getRandomCountry()
         }
     }
