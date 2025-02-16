@@ -1,5 +1,5 @@
 //
-//  FristChallengeView.swift
+//  FirstChallengeView.swift
 //  IKnowEarth
 //
 //  Created by Joao Filipe Reis Justo da Silva on 13/02/25.
@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct Challenge1View: View {
+// TODO: impedir usuário de enivar string vazia
+// TODO: impedir usuário de enviar espaço
+
+struct FirstChallengeView: View {
     
     // MARK: - Properties
     @State private var countrySelected: Country? = nil
@@ -119,5 +122,5 @@ struct Challenge1View: View {
 }
 
 #Preview {
-    Challenge1View()
+    FirstChallengeView()
 }

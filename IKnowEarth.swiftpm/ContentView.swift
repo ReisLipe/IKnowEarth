@@ -19,7 +19,7 @@ struct ContentView: View {
                 
                 
                 NavigationLink {
-                    Challenge1View()
+                    FirstChallengeView()
                 } label: {
                     GenericBtnStyle(text: "Start", color: .blue)
                 }

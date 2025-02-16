@@ -9,29 +9,15 @@ import SwiftUI
 
 struct FirstChallengeTitleView: View {
     var body: some View {
-        ZStack{
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(lineWidth: 5)
-                .foregroundStyle(Color.spacePurple)
-            
-            VStack(spacing: 16){
-                Text("Name the country")
-                    .multilineTextAlignment(.center)
-                    .font(.TitleChallenge)
-                    .foregroundStyle(Color.spacePurple)
-                Rectangle()
-                    .frame(height: 5)
-                    .foregroundStyle(Color.spacePurple)
-                Text("Observe the flag and name the following country.")
-                    .multilineTextAlignment(.center)
-                    .font(.SubtitleChallenge)
-                    .foregroundStyle(Color.spacePurple)
-            }
-        }
+        ChallengeTitle(
+            title: "Name the country",
+            subtitle: "Observe the flag and name the following country."
+        )
     }
 }
 
 #Preview {
     FirstChallengeTitleView()
         .frame(height: 125)
+        .padding()
 }
