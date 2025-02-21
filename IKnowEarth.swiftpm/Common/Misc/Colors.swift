@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    // MARK: System Fonts
     static let spacePurple: Color = Color(red: 60/255, green: 29/255, blue: 107/255)
     static let alienGreen: Color = Color(red: 0/255, green: 182/255, blue: 53/255)
+    static let deepSapceBlue: Color = Color(red: 40/255, green: 40/255, blue: 134/255)
+    static let errorRed: Color = Color(red: 231/255, green: 76/255, blue: 60/255)
 }

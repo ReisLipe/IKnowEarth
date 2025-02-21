@@ -12,15 +12,15 @@ struct GenericBtnStyle: View {
     let color: Color
     
     var body: some View {
-        Text(text ?? "")
-            .font(.callout)
-            .foregroundColor(.white)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundStyle(color)
-                    .frame(width: 164, height: 64)
-                )
+        ZStack {
+            RoundedRectangle(cornerRadius: 8)
+                .foregroundStyle(color)
+                .frame(width: 112, height: 40)
+                .shadow(radius: 8)
+            Text(text ?? "")
+                .font(.subtitleChallenge)
+                .foregroundColor(.white)
+        }
     }
 }
 

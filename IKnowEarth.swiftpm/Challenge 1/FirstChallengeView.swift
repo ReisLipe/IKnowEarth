@@ -9,6 +9,7 @@ import SwiftUI
 
 // TODO: impedir usuário de enivar string vazia
 // TODO: impedir usuário de enviar espaço
+// TODO: posso colocar uma máscara na carta ao invés de mudar toda a cor da tela.
 
 struct FirstChallengeView: View {
     
@@ -20,6 +21,9 @@ struct FirstChallengeView: View {
     @State private var backgroundColor: Color = .white
     @State private var numberOfErrors: Int = 0
     @State private var flipCard: Bool = false
+    @State private var textFieldPlaceholder: String = "Insert the country name"
+    @State private var errorMessage: String = "No error"
+    @State private var errorWarning: Bool = false
     
     // MARK: - Let Properties
     private let numberOfCountriesToPick: Int = 3 //TODO: Change this later
@@ -42,35 +46,48 @@ struct FirstChallengeView: View {
                     value: backgroundColor
                 )
             
-            
-            VStack(spacing: 32){
+            // Content
+            VStack(){
+                
                 // Title
                 FirstChallengeTitleView()
-                    .frame(height: 125)
-                    .padding(.horizontal, 16)
+                    .frame(height: 104)
                 
-                // Game
-                VStack (spacing: 32) {
-                    if let countrySelected {
-                        // Card
-                        CountryCardView(country: countrySelected, flipCard: $flipCard)
-                        
+                Spacer()
+                
+                if let countrySelected {
+                    // Card
+                    CountryCardView(country: countrySelected, flipCard: $flipCard)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 8) {
                         // Text Field
-                        TextFieldView(text: $playerAnswer)
+                        TextFieldView(text: $playerAnswer, placeholder: textFieldPlaceholder, color: .spacePurple)
+                        
+                        // Hidden Error Message
+                        Text(errorMessage)
+                            .font(.subtitleChallenge)
+                            .foregroundStyle(Color.errorRed)
+                            .opacity(errorWarning ? 1 : 0)
                         
                         // Check Button
-                        Button { checkIfNameIsCorrect() } label: {
-                            GenericBtnStyle(text: "Check", color: Color.alienGreen)
+                        Button {
+                            if isAnswerValid() {
+                                checkIfNameIsCorrect()
+                            }
+                        } label: {
+                            GenericBtnStyle(text: "Check!", color: Color.alienGreen)
                         }
-
-                    } else {
-                        Text("Error: No Country Selected")
-                            .font(.TitleChallenge)
-                            .foregroundStyle(Color.spacePurple)
                     }
+                    
+                    
+                } else {
+                    Text("Error: No Country Selected")
+                        .font(.titleChallenge)
+                        .foregroundStyle(Color.spacePurple)
                 }
-                .padding(.horizontal, 16)
-            }
+            }.padding(.horizontal, 16)
         }
         .onAppear{countrySelected = getRandomCountry()}
         .navigationBarBackButtonHidden()
@@ -118,6 +135,20 @@ struct FirstChallengeView: View {
             flipCard.toggle()
             countrySelected = getRandomCountry()
         }
+    }
+    
+    private func isAnswerValid() -> Bool {
+        if playerAnswer.isEmpty {
+            errorMessage =  "You inserted no name, fool!!"
+            errorWarning = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(animationDuration)) {
+                errorWarning = false
+            }
+            
+            return false
+        }
+        return true
     }
 }
 
