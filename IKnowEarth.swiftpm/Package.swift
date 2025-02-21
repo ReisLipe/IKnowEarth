@@ -34,11 +34,14 @@ let package = Package(
             ]
         )
     ],
+    
     targets: [
         .executableTarget(
-            name: "AppModule",
-            path: "."
+         name: "AppModule",
+         path: ".",
+         resources: [
+          .process("Resources")
+         ]
         )
-    ],
-    swiftLanguageVersions: [.version("6")]
-)
+       ]
+      )

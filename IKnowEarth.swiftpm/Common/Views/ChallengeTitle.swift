@@ -18,16 +18,16 @@ struct ChallengeTitle: View {
                 .foregroundStyle(Color.spacePurple)
             
             VStack(spacing: 16){
-                Text(title)
+                Text(title.uppercased())
                     .multilineTextAlignment(.center)
-                    .font(.TitleChallenge)
+                    .font(.titleChallenge)
                     .foregroundStyle(Color.spacePurple)
                 Rectangle()
                     .frame(height: 5)
                     .foregroundStyle(Color.spacePurple)
                 Text(subtitle)
                     .multilineTextAlignment(.center)
-                    .font(.SubtitleChallenge)
+                    .font(.subtitleChallenge)
                     .foregroundStyle(Color.spacePurple)
             }
         }

@@ -10,17 +10,20 @@ import SwiftUI
 struct TextFieldView: View {
     @Binding var text: String
     
+    let placeholder: String
+    let color: Color
+    
     var body: some View {
-        TextField("Insert country name", text: $text)
+        TextField(placeholder, text: $text)
             .padding()
             .background {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(lineWidth: 5)
-                    .foregroundStyle(Color.spacePurple)
+                    .foregroundStyle(color)
             }
     }
 }
 
 #Preview {
-    TextFieldView(text: .constant("Test"))
+    TextFieldView(text: .constant("Test"), placeholder: "Insert the country name", color: Color.spacePurple)
 }
