@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-// MARK: CODE LICENSE
+// MARK: - Copyright - CODE LICENSE
 /* MIT License
 Copyright (c) 2022 Alessandra Luana Nascimento Pereira
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 */
 
-// MARK: FONT LICENSE
+// MARK: - Copyright - FONT LICENSE
 /*
 Hej hej,
 

@@ -16,7 +16,7 @@ struct GenericBtnStyle: View {
             RoundedRectangle(cornerRadius: 8)
                 .foregroundStyle(color)
                 .frame(width: 112, height: 40)
-                .shadow(radius: 8)
+                .shadow(radius: 8, x:8, y:8)
             Text(text ?? "")
                 .font(.subtitleChallenge)
                 .foregroundColor(.white)
