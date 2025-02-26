@@ -8,79 +8,63 @@
 import SwiftUI
 
 struct CutScene3: View {
-    // View
+    @EnvironmentObject var gameInfo: GameInfo
+    
+    // View Control
     @State private var navigateToNextView = false
     @State private var nextSpeech: Bool = false
     @State private var scriptStep: Int = 0
-    @State private var result: AnyView = AnyView(EmptyView())
+    @State private var currentView: AnyView = AnyView(EmptyView())
     
-    // Info
-    @State private var totalErrors: Int = 0
-    @State private var average: Float = 0.0
-    @State private var speechList: [Speech] = []
-    @State private var speech: Speech = scene2Speech[0]
-    
+    // View Info
+    @State private var script: [Speech] = []
+    @State private var speech: Speech?
+    @State private var average: Double = 0.0
     
     var body: some View {
         VStack{
-            result
+            currentView
         }
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $navigateToNextView) {CreditsView()}
+        .navigationDestination(isPresented: $navigateToNextView) {
+            Openning().environmentObject(gameInfo)
+        }
         .onAppear {
-            calculateTotal()
-            speechList = getSpeech()
-            speech = speechList[0]
-            result = updateResult()
+            loadCorrectScript()
+            speech = script[0]
+            currentView = updateResult()
         }
         .onChange(of: nextSpeech, perform: { _ in
             if nextSpeech {
-                if scriptStep < speechList.count - 1 {
-                    nextScene()
-                    result = updateResult()
-                    print("scriptStep: \(scriptStep)")
-                    print("\(speech)")
-                }
-                navigateToNextView = true
+                nextScene()
             }
         })
     }
     
     private func nextScene() {
-        scriptStep += 1
-        speech = speechList[scriptStep]
-        nextSpeech = false
-    }
-    
-    private func calculateTotal() {
-        totalErrors = totalGameErrors
-        average = (Float(15 - totalErrors)/Float(15)) * 10
-    }
-    
-    private func getSpeech() -> [Speech] {
-        if average < 6 {
-            return [
-                .init(speaker: examinerByluu, text: "Your total number of errors was \(totalErrors) and your average was \(average)."),
-                .init(speaker: examinerByluu, text: "Unfortunately, this means you'll have to wait 800 days before you can retest your ability to fly on earth."),
-                .init(speaker: zipZiplyZipin, text: "800 days?! Come on!!"),
-            ]
+        if scriptStep < script.count - 1 {
+            scriptStep += 1
+            speech = script[scriptStep]
+            nextSpeech = false
+            currentView = updateResult()
         } else {
-            return [
-                .init(speaker: examinerByluu, text: "Your total number of errors was \(totalErrors) and your average was \(average)."),
-                .init(speaker: examinerByluu, text: "Well, this means you are able to fly on earth. Go see your sunset."),
-                .init(speaker: zipZiplyZipin, text: "Yesss!! Earth, I see you in 70 years!!!"),
-            ]
+            gameInfo.resetEverything()
+            navigateToNextView.toggle()
         }
     }
     
+    private func loadCorrectScript() {
+        if gameInfo.getAverage() > 6 {
+            script = gameInfo.getScene3Good()
+        } else {
+            script = gameInfo.getScene3Bad()
+        }
+    }
+        
     private func updateResult() -> AnyView {
         switch scriptStep {
-        case 0:
-            return AnyView(Result1View(nextSpeech: $nextSpeech, speech: speech))
-        case 1:
-            return AnyView(Result2View(nextSpeech: $nextSpeech, speech: speech))
-        case 2:
-            return AnyView(Result3View(nextSpeech: $nextSpeech, speech: speech))
+        case 0, 1, 2:
+            return AnyView(EarthBackgroundView(nextSpeech: $nextSpeech, speech: speech))
         default:
             return AnyView(EmptyView())
         }
@@ -88,5 +72,7 @@ struct CutScene3: View {
 }
 
 #Preview {
+    @StateObject var gameInfo: GameInfo = GameInfo()
     CutScene3()
+        .environmentObject(gameInfo)
 }

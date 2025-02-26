@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SecondChallengeView: View {
+    @EnvironmentObject var gameInfo: GameInfo
+    
     // Country Mechanics
     @State private var countriesPicked: [String] = []
     @State private var randomCountries: [Country] = []
@@ -15,10 +17,9 @@ struct SecondChallengeView: View {
     @State private var firstCountryIndex: Int = 0
     @State private var secondCountryIndex: Int = 0
     
-    // Info
+    // View Info
     @State private var backgroundColor: Color = .spaceCadet
     @State private var numberOfPlays: Int = 0
-    @State private var maxNumberOfPlays: Int = 10
     @State private var numberOfErrors: Int = 0
     @State private var animationDuration: Double = 2
     @State private var understoodChallenge: Bool = false
@@ -58,7 +59,7 @@ struct SecondChallengeView: View {
             .padding(.horizontal)
         }
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $navigateToNextView) {CutScene3()}
+        .navigationDestination(isPresented: $navigateToNextView) {CutScene3().environmentObject(gameInfo)}
         .onAppear {
             fillRandomCountriesArray()
         }
@@ -67,13 +68,10 @@ struct SecondChallengeView: View {
             
             numberOfPlays += 1
             checkChoice(removedCountryName: removedCountry)
-            if numberOfPlays < maxNumberOfPlays {
+            if numberOfPlays < gameInfo.game2Rounds {
                 replaceRemovedCountry(removedCountryName: removedCountry)
             } else {
-                totalGameErrors += numberOfErrors
-                print("\(numberOfErrors)")
-                print("\(totalGameErrors)")
-                
+                gameInfo.totalErrors += numberOfErrors
                 navigateToNextView = true
             }
         })
@@ -168,5 +166,7 @@ struct SecondChallengeView: View {
 }
 
 #Preview {
+    @StateObject var gameInfo: GameInfo = GameInfo()
     SecondChallengeView()
+        .environmentObject(gameInfo)
 }

@@ -16,6 +16,8 @@
 import SwiftUI
 
 struct Openning: View {
+    @EnvironmentObject var gameInfo: GameInfo
+    
     @State private var moveUp = false
     @State private var showContent = false
     
@@ -54,7 +56,7 @@ struct Openning: View {
                     Spacer()
                     
                     NavigationLink(
-                        destination: CutScene1(),
+                        destination: CutScene1().environmentObject(gameInfo),
                         label: {
                             Image("CircleArrow")
                                 .resizable()

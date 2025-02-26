@@ -9,24 +9,28 @@ import SwiftUI
 
 // TODO: impedir usuário de enviar espaço
 struct FirstChallengeView: View {
+    @EnvironmentObject var gameInfo: GameInfo
     
-    // MARK: - Properties
+    // Game Info
     @State private var countrySelected: Country? = nil
     @State private var countriesPicked: [String] = []
     @State private var playerAnswer: String = ""
     @State private var correctAnswer: Bool = false
-    @State private var backgroundColor: Color = .spaceCadet
     @State private var numberOfErrors: Int = 0
     @State private var numberOfPlays: Int = 0
+    
+    // View Info
+    @State private var understoodChallenge: Bool = false
+    @State private var navigateToNextView: Bool = false
+    @State private var backgroundColor: Color = .spaceCadet
     @State private var flipCard: Bool = false
+    
+    // Text Field Info
     @State private var textFieldPlaceholder: String = "Insert the country name"
     @State private var errorMessage: String = "No error"
     @State private var errorWarning: Bool = false
-    @State private var understoodChallenge: Bool = false
-    @State private var navigateToNextView: Bool = false
     
-    // MARK: - Let Properties
-    private let numberOfCountriesToPick: Int = 5
+    // Let Properties
     private let animationDuration: Float = 2
     
     var body: some View {
@@ -61,7 +65,7 @@ struct FirstChallengeView: View {
         }
         .onAppear{countrySelected = getRandomCountry()}
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $navigateToNextView) {CutScene2()}
+        .navigationDestination(isPresented: $navigateToNextView) {CutScene2().environmentObject(gameInfo)}
     }
     
     // MARK: Views
@@ -149,13 +153,11 @@ struct FirstChallengeView: View {
             backgroundColor = .spaceCadet
             playerAnswer = ""
             
-            if numberOfPlays < numberOfCountriesToPick {
+            if numberOfPlays < gameInfo.game1Rounds {
                 flipCard.toggle()
                 countrySelected = getRandomCountry()
             } else {
-                totalGameErrors += numberOfErrors
-                print("\(numberOfErrors)")
-                print("\(totalGameErrors)")
+                gameInfo.totalErrors += numberOfErrors
                 navigateToNextView.toggle()
             }
         }
