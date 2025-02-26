@@ -7,14 +7,7 @@
 
 import SwiftUI
 
-struct Country: Equatable {
-    let name: String
-    let card: String
-    let blankCard: String
-    let capital: String
-    let population: Int
-    let area: Double
-}
+
 
 // MARK: - Copyright - FLAG LICENSE
 // Copyright of the flags imported from figma and used for the game cards

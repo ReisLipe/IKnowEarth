@@ -10,9 +10,11 @@ import SwiftUI
 struct SpeechView: View {
     @Binding var nextText: Bool
     
-    @State var speech: Speech
     @State var showImage: Bool = true
-    @State var text: String = ""
+    @State private var displayedText: String = ""
+    @State private var currentIndex: Int = 0
+    
+    var speech: Speech
     
     
     var body: some View {
@@ -42,26 +44,45 @@ struct SpeechView: View {
                     .foregroundStyle(Color.hopeWhite)
                     .frame(height: 132)
                 VStack (alignment: .leading){
-                    Text(text)
+                    Text(displayedText)
                         .font(.speech)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                 }
             }
-            .onAppear {
-                write()
-            }
+        }
+        .onAppear {
+            startTyping()
+        }
+        .onChange(of: speech) { _ in
+            reset()
+            startTyping()
         }
     }
     
-    private func write(at position: Int = 0) {
-        if text.count < speech.text.count {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                text.append(speech.text[position])
-                write(at: position + 1)
+    private func reset() {
+        currentIndex = 0
+        displayedText = ""
+    }
+    
+    private func startTyping() {
+        reset()
+        type()
+    }
+    
+    private func type() {
+        if currentIndex < speech.text.count {
+            let index = speech.text.index(speech.text.startIndex, offsetBy: currentIndex)
+            displayedText.append(speech.text[index])
+            currentIndex += 1
+            
+            // Next iteration
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                type()
             }
-        } else if nextText == false {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+        }
+        else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 nextText = true
             }
         }
@@ -72,7 +93,7 @@ struct SpeechView: View {
     SpeechView(
         nextText: .constant(false),
         speech: .init(
-            speaker: .init(name: "No Name", image: "Tutor"),
+            speaker: .init(type: .examinerByluu),
             text: "Fine, Mr. Zipin, you passed the Flying Saucer Test with a score of 6, but now you want to travel to Earth..."
         )
     )

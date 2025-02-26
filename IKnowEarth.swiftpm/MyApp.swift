@@ -6,11 +6,13 @@ struct MyApp: App {
         FontLoader.registerFonts()
     }
     
+    @StateObject private var gameInfo = GameInfo()
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 Openning()
-                // SecondChallengeView()
+                    .environmentObject(gameInfo)
             }
         }
     }

@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct CutScene1: View {
+    @EnvironmentObject var gameInfo: GameInfo
+    
+    // View Control
     @State private var nextSpeech: Bool = false
     @State private var scriptStep: Int = 0
-    @State private var scriptSpeech: Speech = scene1Speech[0]
-    @State private var currentView: AnyView = AnyView(EmptyView())
     @State private var navigateToNextView: Bool = false
+    
+    // View Info
+    @State private var script: [Speech] = []
+    @State private var speech: Speech?
+    @State private var currentView: AnyView = AnyView(EmptyView())
+    
     
     var body: some View {
         VStack{
@@ -33,26 +40,27 @@ struct CutScene1: View {
             }
             
         }
+        .navigationBarBackButtonHidden()
+        .navigationDestination(isPresented: $navigateToNextView) {FirstChallengeView().environmentObject(gameInfo)}
+        .onAppear {
+            script = gameInfo.getScene1()
+            speech = script[0]
+            currentView = updateCurrentView()
+        }
         .onChange(of: nextSpeech, perform: { _ in
             if nextSpeech {
                 nextScene()
-                currentView = updateCurrentView()
             }
         })
-        .onAppear {
-            currentView = updateCurrentView()
-        }
-        .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $navigateToNextView) {FirstChallengeView()}
+        
     }
     
     private func nextScene() {
-        if scriptStep < scene1Speech.count - 1 {
+        if scriptStep < script.count - 1 {
             scriptStep += 1
-            scriptSpeech = scene1Speech[scriptStep]
+            speech = script[scriptStep]
             nextSpeech = false
-            print(scriptStep)
-            print(scriptSpeech.text)
+            currentView = updateCurrentView()
         } else {
             navigateToNextView.toggle()
         }
@@ -60,30 +68,22 @@ struct CutScene1: View {
     
     private func updateCurrentView() -> AnyView {
         switch scriptStep {
-        case 0:
-            return AnyView(CharacterPresentation1View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 1:
-            return AnyView(CharacterPresentation2View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 2:
-            return AnyView(EarthBackground1View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 3:
-            return AnyView(EarthBackground2View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 4:
-            return AnyView(EarthBackground3View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 5:
-            return AnyView(EarthBackground4View(nextSpeech: $nextSpeech, speech: scriptSpeech))
+        case 0, 1:
+            return AnyView(CharacterPresentationView(nextSpeech: $nextSpeech, speech: speech))
+        case 2, 3, 4, 5:
+            return AnyView(EarthBackgroundView(nextSpeech: $nextSpeech, speech: speech))
         case 6:
-            return AnyView(StarrySkies1View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 7:
-            return AnyView(Sunset1View(nextSpeech: $nextSpeech, speech: scriptSpeech))
-        case 8:
-            return AnyView(Sunset2View(nextSpeech: $nextSpeech, speech: scriptSpeech))
+            return AnyView(StarrySkiesView(nextSpeech: $nextSpeech, speech: speech))
+        case 7, 8:
+            return AnyView(SunsetView(nextSpeech: $nextSpeech, speech: speech))
         default:
-            return AnyView(EmptyView())
+            return AnyView(NotAbleToLoadView())
         }
     }
 }
 
 #Preview {
+    @StateObject var gameInfo = GameInfo()
     CutScene1()
+        .environmentObject(gameInfo)
 }

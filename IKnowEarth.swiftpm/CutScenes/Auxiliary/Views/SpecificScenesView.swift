@@ -7,246 +7,111 @@
 
 import SwiftUI
 
-struct CharacterPresentation1View: View {
+struct NotAbleToLoadView: View {
+    var body: some View {
+        Text("Not able to load the scene.")
+            .font(.titleChallenge)
+            .foregroundStyle(Color.errorRed)
+    }
+}
+
+struct CharacterPresentationView: View {
     @Binding var nextSpeech: Bool
-    @State var speech: Speech
+    let speech: Speech?
     
     var body: some View {
         ZStack{
             Color.deepSapceBlue
                 .ignoresSafeArea(.all)
             
+            if speech != nil {scene} else {NotAbleToLoadView()}
+        }
+    }
+    
+    var scene: some View {
+        VStack{
+            // Image
+            Spacer()
+            Image(speech!.speaker.image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 184, height: 184)
+                .shadow(radius: 16)
+            Spacer()
+            
+            // TextBox
+            SpeechView(nextText: $nextSpeech, showImage: false, speech: speech!)
+                .id(speech!)
+                .padding()
+        }
+    }
+}
+
+struct EarthBackgroundView: View {
+    @Binding var nextSpeech: Bool
+    let speech: Speech?
+    
+    var body: some View {
+        ZStack{
+            Color.spaceCadet
+                .ignoresSafeArea(.all)
+            
+            if speech != nil {scene} else {NotAbleToLoadView()}
+        }
+    }
+    
+    var scene: some View {
+        VStack{
             VStack{
-                Spacer()
-                Image(speech.speaker.image)
+                
+                // Top Left Star
+                HStack{
+                    Image("Stars")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 106, height: 106)
+                    Spacer()
+                }.padding(.horizontal)
+                
+                // Earth
+                Image("Earth")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 184, height: 184)
-                    .shadow(radius: 16)
-                Spacer()
                 
-                SpeechView(nextText: $nextSpeech, speech: speech, showImage: false)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct CharacterPresentation2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.deepSapceBlue
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                Spacer()
-                Image(speech.speaker.image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 184, height: 184)
-                    .shadow(radius: 16)
-                Spacer()
-                
-                SpeechView(nextText: $nextSpeech, speech: speech, showImage: false)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct EarthBackground1View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
+                // Bottom Right Star
+                HStack {
+                    Spacer()
+                    Image("Stars")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
+                        .frame(width: 106, height: 106)
+                }.padding(.horizontal)
             }
-        }
-    }
-}
-
-struct EarthBackground2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
             
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
+            Spacer()
+            SpeechView(nextText: $nextSpeech, speech: speech!)
+                .id(speech!)
+                .padding()
         }
     }
 }
 
-struct EarthBackground3View: View {
+struct StarrySkiesView: View {
     @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct EarthBackground4View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-
-struct StarrySkies1View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
+    let speech: Speech?
     
     var body: some View {
         ZStack{
             Color.nightSkyBlue
                 .ignoresSafeArea(.all)
             
+            if speech != nil {scene} else {NotAbleToLoadView()}
+        }
+    }
+    
+    var scene: some View {
+        ZStack{
             VStack{
                 HStack{
                     Spacer()
@@ -282,321 +147,41 @@ struct StarrySkies1View: View {
             }
             VStack{
                 Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
+                SpeechView(nextText: $nextSpeech, speech: speech!)
+                    .id(speech)
                     .padding()
             }
         }
     }
 }
 
-struct Sunset1View: View {
+struct SunsetView: View {
     @Binding var nextSpeech: Bool
-    @State var speech: Speech
+    let speech: Speech?
     
     var body: some View {
         ZStack{
             Color.nightSkyBlue
                 .ignoresSafeArea(.all)
             
-            VStack{
-                HStack{
-                    Spacer()
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                }.padding(.horizontal)
-                
-                HStack{
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                    Spacer()
-                }.padding(.horizontal)
-                
-                HStack{
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                    Spacer()
-                }.padding(.horizontal)
-                
-                HStack{
-                    Spacer()
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                }.padding(.horizontal)
-            }
-            
-            VStack{
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
+            if speech != nil {scene} else {NotAbleToLoadView()}
         }
     }
-}
-
-struct Sunset2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
     
-    var body: some View {
+    var scene: some View {
         ZStack{
-            Color.nightSkyBlue
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                HStack{
-                    Spacer()
-                    Image("Stars")
+            GeometryReader { geometry in
+                    Image("EarthBKG1")
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                }.padding(.horizontal)
-                
-                HStack{
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                    Spacer()
-                }.padding(.horizontal)
-                
-                HStack{
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                    Spacer()
-                }.padding(.horizontal)
-                
-                HStack{
-                    Spacer()
-                    Image("Stars")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 186, height: 186)
-                }.padding(.horizontal)
-            }
-            
-            VStack{
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct EarthBackground1Scene2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
+                        .scaledToFill()
+                        .frame(height: geometry.size.height+50)
+                        .ignoresSafeArea()
                 }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct EarthBackground2Scene2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct EarthBackground3Scene2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.spaceCadet
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                VStack{
-                    
-                    // Top Left Star
-                    HStack{
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                        Spacer()
-                    }.padding(.horizontal)
-                    
-                    // Earth
-                    Image("Earth")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 184, height: 184)
-                    
-                    // Bottom Right Star
-                    HStack {
-                        Spacer()
-                        Image("Stars")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 106, height: 106)
-                    }.padding(.horizontal)
-                }
-                
-                Spacer()
-                SpeechView(nextText: $nextSpeech, speech: speech)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct Result1View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.deepSapceBlue
-                .ignoresSafeArea(.all)
             
             VStack{
                 Spacer()
-                Image(speech.speaker.image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 184, height: 184)
-                    .shadow(radius: 16)
-                Spacer()
-                
-                SpeechView(nextText: $nextSpeech, speech: speech, showImage: false)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct Result2View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.deepSapceBlue
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                Spacer()
-                Image(speech.speaker.image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 184, height: 184)
-                    .shadow(radius: 16)
-                Spacer()
-                
-                SpeechView(nextText: $nextSpeech, speech: speech, showImage: false)
-                    .padding()
-            }
-        }
-    }
-}
-
-struct Result3View: View {
-    @Binding var nextSpeech: Bool
-    @State var speech: Speech
-    
-    var body: some View {
-        ZStack{
-            Color.deepSapceBlue
-                .ignoresSafeArea(.all)
-            
-            VStack{
-                Spacer()
-                Image(speech.speaker.image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 184, height: 184)
-                    .shadow(radius: 16)
-                Spacer()
-                
-                SpeechView(nextText: $nextSpeech, speech: speech, showImage: false)
+                SpeechView(nextText: $nextSpeech, speech: speech!)
+                    .id(speech!)
                     .padding()
             }
         }
@@ -604,10 +189,11 @@ struct Result3View: View {
 }
 
 #Preview {
-//    CharacterPresentationView(
-//        skipText: .constant(true),
-//        image: "Tutor",
-//        text: "Hello, earthlings!"
+    let speechTest = Speech(speaker: GameInfo.noCharacter, text: "No Text!")
+    
+//    SunsetView(
+//        nextSpeech: .constant(false),
+//        speech: speechTest
 //    )
     
 //    EarthBackgroundView(
@@ -624,10 +210,8 @@ struct Result3View: View {
 //            text: "Hello, earthlings!")
 //    )
     
-//    SunsetView(
-//        nextText: .constant(false),
-//        speech: .init(
-//           speaker: .init(name: "Test", image: "Tutor"),
-//           text: "Hello, earthlings!")
-//    )
+    SunsetView(
+        nextSpeech: .constant(false),
+        speech: speechTest
+    )
 }
